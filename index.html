@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nova Rota do Oeste · Painel de Entregas</title>
+  <style>
+    :root {
+      --c1: #2F509F;
+      --c2: #283272;
+      --c3: #3869B1;
+      --c4: #295BA7;
+      --c5: #13B2AC;
+      --c6: #DBDD3B;
+      --bg: #0d0f18;
+      --bg2: #131724;
+      --border: #1e2540;
+      --text: #dde4f5;
+      --muted: #4f5a7a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      padding: 2.5rem 1.5rem 4rem;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-name {
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.1;
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .header-badge {
+      font-size: 12px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(19, 178, 172, 0.12);
+      color: var(--c5);
+      border: 1px solid rgba(19, 178, 172, 0.25);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--c5);
+      animation: pulse 2s infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: 0.3
+      }
+    }
+
+    .countdown-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2.5rem 2rem 2rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .top-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #283272, #2F509F, #3869B1, #13B2AC);
+    }
+
+    .cd-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .cd-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--c5);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .cd-dates {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .digits-row {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .digit-block {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 22px 14px;
+      min-width: 88px;
+      text-align: center;
+    }
+
+    .digit-num {
+      font-size: 52px;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -2px;
+    }
+
+    .sep {
+      font-size: 44px;
+      font-weight: 700;
+      color: var(--border);
+      padding-top: 18px;
+      line-height: 1;
+    }
+
+    .digit-lbl {
+      font-size: 10px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-top: 8px;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .progress-meta strong {
+      color: var(--c5);
+    }
+
+    .progress-bg {
+      background: var(--bg);
+      border-radius: 999px;
+      height: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #283272, #2F509F, #3869B1, #13B2AC);
+      width: 0%;
+      transition: width 1s ease;
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 1.5rem 0 1rem;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 580px) {
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sep {
+        display: none;
+      }
+
+      .digit-block {
+        min-width: 68px;
+        padding: 14px 12px 10px;
+      }
+
+      .digit-num {
+        font-size: 36px;
+      }
+    }
+
+    .project-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.25rem 1rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.25s, transform 0.2s;
+    }
+
+    .project-card:hover {
+      border-color: var(--c3);
+      transform: translateY(-3px);
+    }
+
+    .project-card.done {
+      border-color: var(--c5);
+      background: rgba(19, 178, 172, 0.05);
+    }
+
+    .card-accent {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      border-radius: 14px 14px 0 0;
+    }
+
+    .p1 .card-accent {
+      background: var(--c2);
+    }
+
+    .p2 .card-accent {
+      background: var(--c3);
+    }
+
+    .p3 .card-accent {
+      background: var(--c5);
+    }
+
+    .card-check {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      transition: all 0.25s;
+    }
+
+    .project-card.done .card-check {
+      display: flex;
+      background: var(--c5);
+      border-color: var(--c5);
+      color: #0d0f18;
+    }
+
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: 12px;
+    }
+
+    .p1 .card-icon {
+      background: rgba(47, 80, 159, 0.2);
+    }
+
+    .p2 .card-icon {
+      background: rgba(56, 105, 177, 0.2);
+    }
+
+    .p3 .card-icon {
+      background: rgba(19, 178, 172, 0.15);
+    }
+
+    .card-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+
+    .card-sub {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .card-tag {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(47, 80, 159, 0.2);
+      color: var(--c3);
+      letter-spacing: 0.5px;
+    }
+
+    .p3 .card-tag {
+      background: rgba(19, 178, 172, 0.15);
+      color: var(--c5);
+    }
+
+    .done-label {
+      display: none;
+      font-size: 10px;
+      color: var(--c5);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-top: 8px;
+      font-weight: 700;
+    }
+
+    .project-card.done .done-label {
+      display: block;
+    }
+
+    .project-card.done .card-tag {
+      display: none;
+    }
+
+    .status-bar {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .status-text {
+      font-size: 13px;
+      color: #8a98b8;
+      flex: 1;
+    }
+
+    .status-text strong {
+      color: var(--c6);
+    }
+
+    .deadline-pill {
+      font-size: 11px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(40, 50, 114, 0.4);
+      color: var(--c3);
+      border: 1px solid rgba(56, 105, 177, 0.3);
+      white-space: nowrap;
+    }
+
+    .logo {
+      width: 50px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <div class="header">
+      <div class="logo-area">
+        <img src="./rota.png" class="logo" alt="">
+        <div>
+          <div class="brand-name">Nova Rota do Oeste</div>
+          <div class="brand-sub">Painel de Entregas &middot; Fluig</div>
+        </div>
+      </div>
+      <div class="header-badge">
+        <div class="pulse-dot"></div>
+        Sprint ativo
+      </div>
+    </div>
+
+    <div class="countdown-card">
+      <div class="top-bar"></div>
+      <div class="cd-header">
+        <div class="cd-title">Contagem Regressiva</div>
+        <div class="cd-dates">07/05/2025 &rarr; 04/08/2025</div>
+      </div>
+      <div class="digits-row">
+        <div class="digit-block">
+          <div class="digit-num" id="d-days" style="color:#2F509F">00</div>
+          <div class="digit-lbl">Dias</div>
+        </div>
+        <div class="sep">:</div>
+        <div class="digit-block">
+          <div class="digit-num" id="d-hours" style="color:#3869B1">00</div>
+          <div class="digit-lbl">Horas</div>
+        </div>
+        <div class="sep">:</div>
+        <div class="digit-block">
+          <div class="digit-num" id="d-min" style="color:#295BA7">00</div>
+          <div class="digit-lbl">Min</div>
+        </div>
+        <div class="sep">:</div>
+        <div class="digit-block">
+          <div class="digit-num" id="d-sec" style="color:#13B2AC">00</div>
+          <div class="digit-lbl">Seg</div>
+        </div>
+      </div>
+      <div class="progress-meta">
+        <span>Inicio: 07 mai 2025</span>
+        <span><strong id="pct-label">0%</strong> decorrido</span>
+        <span>Prazo: 04 ago 2025</span>
+      </div>
+      <div class="progress-bg">
+        <div class="progress-fill" id="prog-fill"></div>
+      </div>
+    </div>
+
+    <div class="section-label">Projetos no Fluig</div>
+
+    <div class="projects-grid">
+      <div class="project-card p1">
+        <div class="card-accent"></div>
+        <div class="card-check">&#10003;</div>
+        <div class="card-icon"><img src="./i-product.svg" alt=""></div>
+        <div class="card-name">Cadastro de Produto</div>
+        <div class="card-sub">Formulario Fluig</div>
+        <div class="card-tag">Em andamento</div>
+        <div class="done-label">&#10003; Entregue</div>
+      </div>
+      <div class="project-card p2">
+        <div class="card-accent"></div>
+        <div class="card-check">&#10003;</div>
+        <div class="card-icon"><img src="./i-partner.svg" alt=""></div>
+        <div class="card-name">Cadastro de Fornecedor</div>
+        <div class="card-sub">Formulario Fluig</div>
+        <div class="card-tag">Em andamento</div>
+        <div class="done-label">&#10003; Entregue</div>
+      </div>
+      <div class="project-card p3">
+        <div class="card-accent"></div>
+        <div class="card-check">&#10003;</div>
+        <div class="card-icon"><img src="./i-client.svg" alt=""></div>
+        <div class="card-name">Cadastro de Cliente</div>
+        <div class="card-sub">Formulario Fluig</div>
+        <div class="card-tag">Em andamento</div>
+        <div class="done-label">&#10003; Entregue</div>
+      </div>
+    </div>
+
+    <div class="status-bar">
+      <div class="pulse-dot"></div>
+      <div class="status-text">Sprint ativo &middot; <strong id="proj-done-count">0 de 3</strong> projetos entregues
+      </div>
+      <div class="deadline-pill">Prazo final: 04/08/2025</div>
+    </div>
+
+  </div>
+
+  <script>
+    // status ( waiting, progressing, finished)
+    const projects = [{
+      name: 'Cadastro de Produto',
+      status: 'progressing'
+    },
+      {
+        name: 'Cadastro de Fornecedor',
+        status: 'waiting'
+    }, {
+        name: 'Cadastro de Cliente',
+        status: 'waiting'
+    }];
+
+    (function initCards() {
+      var statusLabel = { waiting: 'Aguardando', progressing: 'Em andamento' };
+      var cards = document.querySelectorAll('.project-card');
+      var doneCount = 0;
+      projects.forEach(function (proj, i) {
+        var card = cards[i];
+        if (!card) return;
+        if (proj.status === 'finished') {
+          card.classList.add('done');
+          doneCount++;
+        } else {
+          card.classList.remove('done');
+          var tag = card.querySelector('.card-tag');
+          if (tag) tag.textContent = statusLabel[proj.status] || proj.status;
+        }
+      });
+      document.getElementById('proj-done-count').textContent = doneCount + ' de ' + projects.length;
+    })();
+
+    (function () {
+      var endDate = new Date(2026, 7, 4, 23, 59, 59);
+      var startDate = new Date(2026, 4, 7, 0, 0, 0);
+      var totalMs = endDate.getTime() - startDate.getTime();
+
+      function pad(value) {
+        var number = Math.floor(Math.max(0, value));
+        return number < 10 ? '0' + number : '' + number;
+      }
+
+      function update() {
+        var now = new Date();
+        var diffMs = endDate.getTime() - now.getTime();
+        if (diffMs < 0) diffMs = 0;
+
+        var days = Math.floor(diffMs / 86400000);
+        var hours = Math.floor((diffMs % 86400000) / 3600000);
+        var minutes = Math.floor((diffMs % 3600000) / 60000);
+        var seconds = Math.floor((diffMs % 60000) / 1000);
+
+        document.getElementById('d-days').textContent = pad(days);
+        document.getElementById('d-hours').textContent = pad(hours);
+        document.getElementById('d-min').textContent = pad(minutes);
+        document.getElementById('d-sec').textContent = pad(seconds);
+
+        var elapsed = now.getTime() - startDate.getTime();
+        if (elapsed < 0) elapsed = 0;
+        var pct = totalMs > 0 ? Math.min(100, Math.round(elapsed / totalMs * 100)) : 100;
+        document.getElementById('pct-label').textContent = pct + '%';
+        document.getElementById('prog-fill').style.width = pct + '%';
+      }
+
+      update()
+      setInterval(update, 1000);
+
+
+    })();
+  </script>
+</body>
+
+</html>
