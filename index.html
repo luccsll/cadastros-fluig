@@ -379,6 +379,12 @@
       display: none;
     }
 
+    .card-duration {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
     .status-bar {
       background: var(--bg2);
       border: 1px solid var(--border);
@@ -481,6 +487,7 @@
         <div class="card-sub">Formulario Fluig</div>
         <div class="card-tag">Em andamento</div>
         <div class="done-label">&#10003; Entregue</div>
+        <div class="card-duration"></div>
       </div>
       <div class="project-card p2">
         <div class="card-accent"></div>
@@ -490,6 +497,7 @@
         <div class="card-sub">Formulario Fluig</div>
         <div class="card-tag">Em andamento</div>
         <div class="done-label">&#10003; Entregue</div>
+        <div class="card-duration"></div>
       </div>
       <div class="project-card p3">
         <div class="card-accent"></div>
@@ -499,6 +507,7 @@
         <div class="card-sub">Formulario Fluig</div>
         <div class="card-tag">Em andamento</div>
         <div class="done-label">&#10003; Entregue</div>
+        <div class="card-duration"></div>
       </div>
     </div>
 
@@ -512,17 +521,23 @@
   </div>
 
   <script>
-    // status ( waiting, progressing, finished)
+    // status ( , progressing, finished)
     const projects = [{
       name: 'Cadastro de Produto',
-      status: 'finished'
+      status: 'finished',
+      startDate: new Date(2025, 5, 7),
+      endDate: new Date(2025, 6, 3)
     },
-      {
-        name: 'Cadastro de Fornecedor',
-        status: 'waiting'
+    {
+      name: 'Cadastro de Fornecedor',
+      status: 'progressing',
+      startDate: new Date(2025, 6, 3),
+      endDate: null
     }, {
-        name: 'Cadastro de Cliente',
-        status: 'waiting'
+      name: 'Cadastro de Cliente',
+      status: 'waiting',
+      startDate: null,
+      endDate: null
     }];
 
     (function initCards() {
@@ -539,6 +554,12 @@
           card.classList.remove('done');
           var tag = card.querySelector('.card-tag');
           if (tag) tag.textContent = statusLabel[proj.status] || proj.status;
+        }
+        var dur = card.querySelector('.card-duration');
+        if (dur && proj.startDate && proj.endDate) {
+          var diffMs = proj.endDate.getTime() - proj.startDate.getTime();
+          var days = Math.round(diffMs / 86400000);
+          dur.textContent = days === 1 ? '1 dia' : days + ' dias';
         }
       });
       document.getElementById('proj-done-count').textContent = doneCount + ' de ' + projects.length;
