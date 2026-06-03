@@ -258,13 +258,13 @@
     }
 
     .project-card:hover {
-      border-color: var(--c3);
+      /* border-color: var(--c3); */
       transform: translateY(-3px);
+      opacity: 1 !important;
     }
 
     .project-card.done {
-      border-color: var(--c5);
-      background: rgba(19, 178, 172, 0.05);
+    opacity: .5;
     }
 
     .card-accent {
@@ -383,6 +383,29 @@
       font-size: 10px;
       color: var(--muted);
       margin-top: 4px;
+    }
+
+    .project-card.active {
+      border-color: var(--c6);
+      background: rgba(219, 221, 59, 0.04);
+      box-shadow: 0 0 0 1px rgba(219, 221, 59, 0.25), 0 0 24px rgba(219, 221, 59, 0.08);
+      animation: active-glow 3s ease-in-out infinite;
+    }
+
+    @keyframes active-glow {
+      0%, 100% { box-shadow: 0 0 0 1px rgba(219, 221, 59, 0.25), 0 0 18px rgba(219, 221, 59, 0.07); }
+      50%       { box-shadow: 0 0 0 1px rgba(219, 221, 59, 0.5),  0 0 32px rgba(219, 221, 59, 0.18); }
+    }
+
+    .project-card.active .card-accent {
+      background: linear-gradient(90deg, var(--c6), #DBDD3B);
+      height: 4px;
+    }
+
+    .project-card.active .card-tag {
+      background: rgba(219, 221, 59, 0.15);
+      color: var(--c6);
+      font-weight: 700;
     }
 
     .status-bar {
@@ -554,6 +577,9 @@
           card.classList.remove('done');
           var tag = card.querySelector('.card-tag');
           if (tag) tag.textContent = statusLabel[proj.status] || proj.status;
+          if (proj.status === 'progressing') {
+            card.classList.add('active');
+          }
         }
         var dur = card.querySelector('.card-duration');
         if (dur && proj.startDate && proj.endDate) {
